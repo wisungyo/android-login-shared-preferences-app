@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 
 class SplashScreen : AppCompatActivity() {
     lateinit var handler : Handler
@@ -11,16 +12,18 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
         this.supportActionBar?.hide()
+        handler = Handler()
+        val preferences = SharedPreferences(this)
+        Log.d("DEBUGGING", "isLogin is ${preferences.getIsLogin()}")
 
-        if (LoginPage.STATUS_LOGIN) {
-            handler = Handler()
+        val isLogin = preferences.getIsLogin()
+        if (isLogin == "true") {
             handler.postDelayed({
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }, 3000)
         } else {
-            handler = Handler()
             handler.postDelayed({
                 val intent = Intent(this, LoginPage::class.java)
                 startActivity(intent)
